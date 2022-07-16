@@ -7,6 +7,7 @@ type CreateRequest struct {
 
 type CreateResponse struct {
 	ID             string
+	UserName       string
 	MembershipType string
 }
 
@@ -20,4 +21,8 @@ type UpdateResponse struct {
 	ID             string
 	UserName       string
 	MembershipType string
+}
+
+type DeleteResponse struct {
+	ID string
 }

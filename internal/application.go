@@ -9,13 +9,49 @@ func NewApplication(repository Repository) *Application {
 }
 
 func (app *Application) Create(request CreateRequest) (CreateResponse, error) {
-	return CreateResponse{"1", "naver"}, nil
+	for _, member := range app.repository.data {
+		if member.UserName == request.UserName {
+			return CreateResponse{}, nil
+		}
+	}
+	res, err := app.Create(CreateRequest{request.UserName, request.MembershipType})
+	if err != nil {
+		return CreateResponse{}, nil
+	}
+	return CreateResponse{res.ID, res.UserName, res.MembershipType}, nil
 }
 
 func (app *Application) Update(request UpdateRequest) (UpdateResponse, error) {
-	return UpdateResponse{}, nil
+	var foundUser Membership
+
+	for _, member := range app.repository.data {
+		if member.UserName == request.UserName {
+			foundUser = member
+			break
+		}
+	}
+	res, err := app.Update(UpdateRequest{foundUser.ID, foundUser.UserName, foundUser.MembershipType})
+	if err != nil {
+		return UpdateResponse{}, err
+	}
+
+	return UpdateResponse{res.ID, res.UserName, res.MembershipType}, nil
 }
 
-func (app *Application) Delete(id string) error {
-	return nil
+func (app *Application) Delete(id string) (DeleteResponse, error) {
+	var foundUser Membership
+
+	for _, member := range app.repository.data {
+		if member.ID == id {
+			foundUser = member
+			break
+		}
+	}
+
+	res, err := app.Delete(foundUser.ID)
+	if err != nil {
+		return DeleteResponse{}, err
+	}
+
+	return DeleteResponse{res.ID}, nil
 }
