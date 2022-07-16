@@ -33,7 +33,7 @@ func TestCreateMembership(t *testing.T) {
 }
 
 func TestUpdate(t *testing.T) {
-	t.Run("internal 정보를 갱신한다.", func(t *testing.T) {
+	t.Run("멤버십 정보를 갱신한다.", func(t *testing.T) {
 
 	})
 
